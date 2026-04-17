@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2026 by anonymous (http://jsbin.com/secazuviru/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可愛風格碼錶設計對照</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'PingFang TC', cursive;
+        }
+
+        .split-screen {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            aspect-ratio: 16 / 9;
+        }
+
+        .design-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .header-label {
+            position: absolute;
+            top: 40px;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            padding: 8px 24px;
+            border-radius: 50px;
+        }
+
+        .stopwatch-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ears {
+            display: flex;
+            gap: 70px;
+            margin-bottom: -45px;
+            z-index: 2;
+        }
+
+        .ear-btn {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .main-circle {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+
+        /* 旋轉指針動態 - 修正為以中心點為旋轉軸 */
+        .needle {
+            position: absolute;
+            width: 8px;
+            height: 120px; /* 稍微縮短長度以免超出圓圈 */
+            top: 50%;
+            left: 50%;
+            /* 讓指針的底端位於中心，透過 transform-origin 設置旋轉軸 */
+            transform-origin: 50% 100%; 
+            border-radius: 20px;
+            /* 調整初始位置：向上位移一半長度，確保底端在圓心 */
+            transform: translate(-50%, -100%) rotate(0deg);
+            animation: rotateNeedle 12s linear infinite;
+        }
+
+        /* 中心支點圓點 */
+        .center-dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: inherit;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        @keyframes rotateNeedle {
+            from { transform: translate(-50%, -100%) rotate(0deg); }
+            to { transform: translate(-50%, -100%) rotate(360deg); }
+        }
+
+        .time-text {
+            font-size: 48px;
+            font-weight: 900;
+            z-index: 5;
+            letter-spacing: -1px;
+            margin-top: 60px; /* 將文字向下推，避開中心指針軸 */
+        }
+
+        /* --- 左邊：馬卡龍粉嫩風 --- */
+        .side-macaron {
+            background-color: #FFF5F7;
+            color: #FF85A2;
+        }
+
+        .side-macaron .header-label { background: #FFD1DC; color: #FF4D7D; }
+
+        .side-macaron .ear-btn {
+            background-color: #FFE4E9;
+            border: 5px solid #FFFFFF;
+            color: #FF758F;
+        }
+
+        .side-macaron .ear-btn.start { background-color: #D1F2EB; color: #1ABC9C; border-color: #FFFFFF; }
+
+        .side-macaron .main-circle {
+            background-color: #FFFFFF;
+            border: 12px solid #FFD1DC;
+        }
+
+        .side-macaron .needle {
+            background: #FFB3C1;
+        }
+
+        .side-macaron .center-dot {
+            background-color: #FF758F;
+        }
+
+        .side-macaron .time-text { color: #FF758F; }
+
+        /* --- 右邊：森林系熊熊風 --- */
+        .side-forest {
+            background-color: #FDFCF0;
+            color: #8D6E63;
+        }
+
+        .side-forest .header-label { background: #E8F5E9; color: #2E7D32; }
+
+        .side-forest .ear-btn {
+            background-color: #D7CCC8;
+            border: 6px solid #BCAAA4;
+            color: #5D4037;
+        }
+
+        .side-forest .ear-btn.start { background-color: #FFF176; color: #F57F17; border-color: #FFE082; }
+
+        .side-forest .main-circle {
+            background-color: #FFFFFF;
+            border: 12px solid #D7CCC8;
+        }
+
+        .side-forest .needle {
+            background: #A1887F;
+        }
+
+        .side-forest .center-dot {
+            background-color: #6D4C41;
+        }
+
+        .side-forest .time-text { color: #6D4C41; }
+
+        /* 裝飾雲朵/小點點 */
+        .decoration {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="split-screen">
+        <!-- Style A: 馬卡龍粉嫩風 -->
+        <div class="design-side side-macaron">
+            <div class="header-label">STYLE A: 甜心馬卡龍</div>
+            
+            <span class="decoration" style="top: 15%; left: 15%;">🌸</span>
+            <span class="decoration" style="bottom: 15%; right: 15%;">🍬</span>
+
+            <div class="stopwatch-container">
+                <div class="ears">
+                    <div class="ear-btn start">GO!</div>
+                    <div class="ear-btn reset">重置</div>
+                </div>
+                <div class="main-circle">
+                    <div class="needle"></div>
+                    <div class="center-dot"></div>
+                    <div class="time-text">02:15.30</div>
+                </div>
+            </div>
+            
+            <p class="mt-12 text-pink-300 text-lg font-bold">糖果配色 / 柔軟圓角 / 夢幻感</p>
+        </div>
+
+        <!-- Style B: 森林系熊熊風 -->
+        <div class="design-side side-forest">
+            <div class="header-label">STYLE B: 森林小熊</div>
+            
+            <span class="decoration" style="top: 15%; right: 15%;">🌿</span>
+            <span class="decoration" style="bottom: 15%; left: 15%;">🐾</span>
+
+            <div class="stopwatch-container">
+                <div class="ears">
+                    <div class="ear-btn start">開始</div>
+                    <div class="ear-btn reset">歸零</div>
+                </div>
+                <div class="main-circle">
+                    <div class="needle"></div>
+                    <div class="center-dot"></div>
+                    <div class="time-text">05:40.88</div>
+                </div>
+            </div>
+
+            <p class="mt-12 text-amber-700 text-lg font-bold">大地色調 / 木質裝飾 / 溫暖感</p>
+        </div>
+    </div>
+
+</body>
+</html>
